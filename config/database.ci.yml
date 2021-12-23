@@ -1,0 +1,11 @@
+test: &test
+  host: <%= ENV["PGHOST"] %>
+  adapter: postgis
+  encoding: unicode
+  database: circleci-test
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  username: <%= ENV["PGUSER"] %>
+  password: ""
+
+cucumber:
+  <<: *test
