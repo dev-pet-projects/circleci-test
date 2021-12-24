@@ -18,10 +18,14 @@ jobs:
     steps:
       - checkout
       - run: sudo apt-get install curl ca-certificates gnupg && sudo update-ca-certificates
-      - run: |
-          echo "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main" | sudo tee -a /etc/apt/sources.list \
-          && wget -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add ACCC4CF8.asc \
-          && sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F76221572C52609D 749D6EEC0353B12C
+      - run: curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/apt.postgresql.org.gpg >/dev/null 
+      - run: sudo bash -c 'echo "deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main" >> /etc/apt/sources.list.d/pgdg.list'
+      - run: sudo apt-get update
+      # - run: sudo apt-get -y --allow-unauthenticated install postgresql-client-12
+      # - run: |
+      #     echo "deb http://apt.postgresql.org/pub/repos/apt/ xenial-pgdg main" | sudo tee -a /etc/apt/sources.list \
+      #     && wget -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add ACCC4CF8.asc \
+      #     && sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys F76221572C52609D 749D6EEC0353B12C
 
       # Install System Dependencies
       - run: sudo apt-get update -qq && sudo apt-get install -y build-essential postgresql-client-9.5
